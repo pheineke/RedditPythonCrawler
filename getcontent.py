@@ -17,7 +17,15 @@ print(reddit.read_only)
 file = open("var.txt", "w")
 
 
-fields = [(submission.title, submission.selftext) for submission in reddit.subreddit("test").hot(limit=10)]
+fields = []
+
+for submission in reddit.subreddit("ich_iel").hot(limit=10):
+    if len(submission.selftext) == 0 and len(submission.url) != 0:
+        fields.append([submission.title, submission.url])
+    else:
+        fields.append([submission.title, submission.selftext])
+    #file.write(str(vars(submission)) + "\n\n")
+
 
 
 file.close()
