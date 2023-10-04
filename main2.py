@@ -5,7 +5,7 @@ from kivy.uix.label import Label
 from kivy.uix.video import Video
 from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle
-import main
+import getcontent
 
 class ScrollableField(BoxLayout):
     def __init__(self, title, content, **kwargs):
@@ -56,7 +56,7 @@ class ScrollablePage(ScrollView):
 
 class MyApp(App):
     def build(self):
-        return ScrollablePage(fields=main.fields)
+        return ScrollablePage(fields=getcontent.fields)
 
 
 if __name__ == '__main__':
