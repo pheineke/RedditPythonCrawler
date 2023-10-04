@@ -1,8 +1,10 @@
 from kivy.app import App
 from kivy.uix.boxlayout import BoxLayout
-from kivy.uix.scrollview import ScrollView
+from kivy.uix.scrollview import ScrollView  
 from kivy.uix.label import Label
 from kivy.uix.video import Video
+from kivy.loader import Loader
+from kivy.uix.image import AsyncImage
 from kivy.core.window import Window
 from kivy.graphics import Color, Rectangle
 import getcontent
@@ -19,24 +21,30 @@ class ScrollableField(BoxLayout):
             self.rect = Rectangle(pos=self.pos, size=self.size)
         self.bind(pos=self.update_rect, size=self.update_rect)
         ####TITLE
-        title_label = Label(text=title, size_hint=(1, 0.8), text_size=(self.width - self.padding[0] - self.padding[2], None))
+        title_label = Label(text=title, size_hint=(.00001, .00001), text_size=(self.width - self.padding[0] - self.padding[2], None))
         title_label.bind(size=title_label.setter('text_size'))
         self.add_widget(title_label)
 
-
-        if content.endswith('.mp4'):
+        if content.endswith(('.mp4', '.gif', '.jpg', '.jpeg', '.png')):
             with self.canvas:
                 Color(0, 0, 0, 0.8)
                 self.rect = Rectangle(pos=self.pos, size=self.size)
             self.bind(pos=self.update_rect, size=self.update_rect)
-            video = Video(source=content, state='play', options={'allow_stretch': True})
-            self.add_widget(video)
+            if content.endswith('.mp4'):
+                video = Video(source=content, state='play', options={'allow_stretch': True})
+                self.add_widget(video)
+            else:
+                image = AsyncImage(source=content,
+                                   size_hint=(1, 1),
+                                   size=(500,500),
+                                   keep_ratio=True,
+                                   allow_stretch=True)
+                self.add_widget(image)
         else:
             with self.canvas:
                 Color(47, 48, 69, 0.1)
                 self.rect = Rectangle(pos=self.pos, size=self.size)
             self.bind(pos=self.update_rect, size=self.update_rect)
-        ####CONTENT
             content_label = Label(text=content, size_hint=(1, 0.8), text_size=(self.width - self.padding[0] - self.padding[2], None))
             content_label.bind(size=content_label.setter('text_size'))
             self.add_widget(content_label)
