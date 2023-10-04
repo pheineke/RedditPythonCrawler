@@ -12,14 +12,18 @@ class ScrollableField(BoxLayout):
         super().__init__(**kwargs)
         self.orientation = 'vertical'
         self.size_hint_y = None
-        self.height = Window.height / 6
+        self.height = Window.height / 4
         self.padding = [10, 0, 10, 0]
         with self.canvas:
             Color(0, 0, 0, 0.8)
             self.rect = Rectangle(pos=self.pos, size=self.size)
         self.bind(pos=self.update_rect, size=self.update_rect)
         ####TITLE
-        self.add_widget(Label(text=title, size_hint=(0.1, 0.2), font_size=16, color=[1, 1, 1, 1]))
+        title_label = Label(text=title, size_hint=(1, 0.2), font_size=16, color=[1, 1, 1, 1])
+        title_label.bind(size=title_label.setter('text_size'))
+        self.add_widget(title_label)
+
+        
         if content.endswith('.mp4'):
             with self.canvas:
                 Color(0, 0, 0, 0.8)
@@ -33,7 +37,9 @@ class ScrollableField(BoxLayout):
                 self.rect = Rectangle(pos=self.pos, size=self.size)
             self.bind(pos=self.update_rect, size=self.update_rect)
         ####CONTENT
-            self.add_widget(Label(text=content, size_hint=(0.1, 0.8)))
+            content_label = Label(text=content, size_hint=(1, 0.8), text_size=(self.width - self.padding[0] - self.padding[2], None))
+            content_label.bind(size=content_label.setter('text_size'))
+            self.add_widget(content_label)
 
     def update_rect(self, *args):
         self.rect.pos = self.pos
